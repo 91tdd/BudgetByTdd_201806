@@ -66,7 +66,6 @@ namespace BudgetByTdd
             AmountShouldBe(6m, "20180501", "20180503");
         }
 
-        [Ignore]
         [TestMethod]
         public void multiple_budgets()
         {
