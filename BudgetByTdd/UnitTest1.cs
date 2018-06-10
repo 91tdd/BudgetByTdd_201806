@@ -1,15 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace BudgetByTdd
 {
     [TestClass]
     public class AccountingTests
     {
-        private IBudgetRepository _budgetRepository = Substitute.For<IBudgetRepository>();
         private Accounting _accounting;
+        private IBudgetRepository _budgetRepository = Substitute.For<IBudgetRepository>();
 
         [TestInitialize]
         public void TestInit()
@@ -20,18 +20,14 @@ namespace BudgetByTdd
         [TestMethod]
         public void no_budgets()
         {
-            _budgetRepository.GetAll().Returns(new List<Budget>());
+            GivenBudgets();
             AmountShouldBe(0m, "20180601", "20180601");
         }
 
         [TestMethod]
         public void period_inside_budget_month()
         {
-            _budgetRepository.GetAll().Returns(new List<Budget>
-            {
-                new Budget{YearMonth="201806", Amount=30}
-            });
-
+            GivenBudgets(new Budget { YearMonth = "201806", Amount = 30 });
             AmountShouldBe(1m, "20180601", "20180601");
         }
 
@@ -40,6 +36,11 @@ namespace BudgetByTdd
             DateTime start = DateTime.ParseExact(startTime, "yyyyMMdd", null);
             DateTime end = DateTime.ParseExact(endTime, "yyyyMMdd", null);
             Assert.AreEqual(expected, _accounting.TotalAmount(start, end));
+        }
+
+        private void GivenBudgets(params Budget[] budgets)
+        {
+            _budgetRepository.GetAll().Returns(budgets.ToList());
         }
     }
 }
