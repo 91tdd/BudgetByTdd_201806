@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace BudgetByTdd
 {
@@ -13,6 +14,12 @@ namespace BudgetByTdd
 
         public decimal TotalAmount(DateTime start, DateTime end)
         {
+            var budgets = _budgetRepository.GetAll();
+            if (budgets.Any())
+            {
+                var days = (end - start).Days + 1;
+                return days;
+            }
             return 0;
         }
     }
