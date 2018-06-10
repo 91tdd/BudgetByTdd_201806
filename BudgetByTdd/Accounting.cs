@@ -36,8 +36,14 @@ namespace BudgetByTdd
             var period = new Period(start, end);
             if (budgets.Any())
             {
+                if (period.End < budgets[0].FirstDay)
+                {
+                    return 0;
+                }
+
                 return period.Days();
             }
+
             return 0;
         }
     }

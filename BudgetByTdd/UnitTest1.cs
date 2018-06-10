@@ -31,6 +31,13 @@ namespace BudgetByTdd
             AmountShouldBe(1m, "20180601", "20180601");
         }
 
+        [TestMethod]
+        public void no_overlap_period_before_budget_firstDay()
+        {
+            GivenBudgets(new Budget { YearMonth = "201807", Amount = 31 });
+            AmountShouldBe(0m, "20180601", "20180601");
+        }
+
         private void AmountShouldBe(decimal expected, string startTime, string endTime)
         {
             DateTime start = DateTime.ParseExact(startTime, "yyyyMMdd", null);
