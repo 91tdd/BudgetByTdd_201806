@@ -26,5 +26,16 @@ namespace BudgetByTdd
         {
             return Amount / DaysInMonth;
         }
+
+        public Period PeriodFromBudget()
+        {
+            var periodFromBudget = new Period(FirstDay, LastDay);
+            return periodFromBudget;
+        }
+
+        public decimal OverlapAmount(Period period)
+        {
+            return period.OverlappingDays(PeriodFromBudget()) * DailyAmount();
+        }
     }
 }
