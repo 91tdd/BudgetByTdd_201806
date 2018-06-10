@@ -22,7 +22,7 @@ namespace BudgetByTdd
 
         public decimal OverlappingDays(Budget budget)
         {
-            if (End < budget.FirstDay)
+            if (End < budget.FirstDay || Start > budget.LastDay)
             {
                 return 0;
             }
