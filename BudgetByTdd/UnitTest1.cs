@@ -7,15 +7,26 @@ namespace BudgetByTdd
     [TestClass]
     public class AccountingTests
     {
+        private IBudgetRepository _budgetRepository = Substitute.For<IBudgetRepository>();
+        private Accounting _accounting;
+
+        [TestInitialize]
+        public void TestInit()
+        {
+            _accounting = new Accounting(_budgetRepository);
+        }
+
         [TestMethod]
         public void no_budgets()
         {
-            var budgetRepository = Substitute.For<IBudgetRepository>();
-            var accounting = new Accounting(budgetRepository);
-            var start = new DateTime(2018, 6, 1);
-            var end = new DateTime(2018, 6, 1);
-            var totalAmount = accounting.TotalAmount(start, end);
-            Assert.AreEqual(0m, totalAmount);
+            AmountShouldBe(0m, "20180601", "20180601");
+        }
+
+        private void AmountShouldBe(decimal expected, string startTime, string endTime)
+        {
+            DateTime start = DateTime.ParseExact(startTime, "yyyyMMdd", null);
+            DateTime end = DateTime.ParseExact(endTime, "yyyyMMdd", null);
+            Assert.AreEqual(expected, _accounting.TotalAmount(start, end));
         }
     }
 }
